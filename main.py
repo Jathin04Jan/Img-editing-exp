@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import MultiDict 
 import os
 from imageProcessing import imagOperation
+from deleting import delete_files_in_directory
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'webg', 'png', 'jpg', 'jpeg', 'gif'}
@@ -16,7 +17,9 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route("/")
-def hello_world():
+def home():
+    delete_files_in_directory('uploads')
+    delete_files_in_directory('static')
     return render_template("index.html")
 
 @app.route("/about")
@@ -50,7 +53,9 @@ def edit():
                 new = imagOperation(filename, operation)
                 flash(f"Your image is processed and is avaible <a href= '/{new}' target= '_blank'> here </a>")
 
+            flash(f"Folder Path <a href= '/static' target= '_blank'> click Me </a>")
             return render_template("ThankyouPage.html")
+    
     return render_template("ThankyouPage.html")
 
 app.run(debug= True, port= 8000)
