@@ -4,6 +4,8 @@ from werkzeug.datastructures import MultiDict
 import os
 from imageProcessing import imagOperation
 from deleting import delete_files_in_directory
+import zipfile
+from flask import send_file,Flask,send_from_directory
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'webg', 'png', 'jpg', 'jpeg', 'gif'}
@@ -20,6 +22,7 @@ def allowed_file(filename):
 def home():
     delete_files_in_directory('uploads')
     delete_files_in_directory('static')
+    delete_files_in_directory('zipFile')
     return render_template("index.html")
 
 @app.route("/about")
@@ -57,5 +60,22 @@ def edit():
             return render_template("ThankyouPage.html")
     
     return render_template("ThankyouPage.html")
+
+@app.route('/download_files')
+def download_all():
+    # Zip file Initialization and you can change the compression type
+    zipfolder = zipfile.ZipFile('zipFile/ProcessedImages.zip','w', compression = zipfile.ZIP_STORED)
+
+    # zip all the files which are inside in the folder
+    for root,dirs, files in os.walk('static'):
+        for file in files:
+            zipfolder.write('static/'+file)
+    zipfolder.close()
+
+    return send_file('zipFile/ProcessedImages.zip',
+            mimetype = 'zip',
+            download_name= 'zipFile/ProcessedImages.zip',
+            as_attachment = True)
+
 
 app.run(debug= True, port= 8000)
