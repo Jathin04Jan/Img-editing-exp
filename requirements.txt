@@ -1,0 +1,5 @@
+Flask
+Gunicorn
+openCV-python
+Pillow
+rembg

@@ -1,4 +1,6 @@
 import cv2
+from rembg import remove
+from PIL import Image 
 
 def imagOperation(filename, operation):
     img = cv2.imread(f"uploads/{filename}")
@@ -17,10 +19,17 @@ def imagOperation(filename, operation):
         
         case "cjpg":
             newFilename = f"static/{filename.split('.')[0]}.jpg"
-            cv2.imwrite(filename, img)
+            cv2.imwrite(newFilename, img)
             return newFilename
         
         case "cpng":
             newFilename = f"static/{filename.split('.')[0]}.png"
             cv2.imwrite(newFilename, img)
+            return newFilename
+        
+        case "rbg":
+            newFilename = imagOperation(filename, 'cpng')
+            input_image = Image.open(f"{newFilename}")
+            output_image = remove(input_image)
+            output_image.save(f"{newFilename}")
             return newFilename
