@@ -78,4 +78,4 @@ def download_all():
             as_attachment = True)
 
 
-app.run()
+#app.run()
