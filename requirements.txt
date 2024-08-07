@@ -1,6 +1,6 @@
 Flask==2.2.2
-Gunicorn==22.0.0
+gunicorn==22.0.0
 Werkzeug==2.2.2
-openCV-python
-Pillow
-rembg
+opencv-python==4.8.1.78
+rembg==2.0.58
+Pillow==9.4.0
